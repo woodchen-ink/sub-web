@@ -4,10 +4,7 @@
       <el-col>
         <el-card>
           <div slot="header">
-            Subscription Converter
-            <!-- <svg-icon icon-class="github" style="margin-left: 20px" @click="goToProject" /> -->
-
-            <div style="display: inline-block; position:absolute; right: 20px">{{ backendVersion }}</div>
+            订阅转换器-V2ray,Clash,SSR,SS等订阅链接在线转换
           </div>
           <el-container>
             <el-form :model="form" label-width="140px" label-position="left" style="width: 100%">
@@ -26,19 +23,12 @@
               </el-form-item>
 
               <div v-if="advanced === '2'">
-                <!-- <el-form-item label="后端地址:">
-                  <el-autocomplete style="width: 100%" v-model="form.customBackend" :fetch-suggestions="backendSearch"
-                    placeholder="动动小手，（建议）自行搭建后端服务。例：http://127.0.0.1:25500/sub?">
-                    <el-button slot="append" @click="gotoGayhub" icon="el-icon-link">前往项目仓库</el-button>
-                  </el-autocomplete>
-                </el-form-item> -->
                 <el-form-item label="远程配置:">
                   <el-select v-model="form.remoteConfig" allow-create filterable placeholder="请选择" style="width: 100%">
                     <el-option-group v-for="group in options.remoteConfig" :key="group.label" :label="group.label">
                       <el-option v-for="item in group.options" :key="item.value" :label="item.label"
                         :value="item.value"></el-option>
                     </el-option-group>
-                    <el-button slot="append" @click="gotoRemoteConfig" icon="el-icon-link">配置示例</el-button>
                   </el-select>
                 </el-form-item>
                 <el-form-item label="Include:">
@@ -96,9 +86,6 @@
                       <el-row>
                         <el-checkbox v-model="form.tpl.clash.doh" label="Clash.DoH"></el-checkbox>
                       </el-row>
-                      <el-row>
-                        <el-checkbox v-model="form.insert" label="网易云"></el-checkbox>
-                      </el-row>
                       <el-button slot="reference">定制功能</el-button>
                     </el-popover>
                     <el-popover placement="top-end" title="添加自定义转换参数" trigger="hover">
@@ -117,24 +104,16 @@
                 <i class="el-icon-magic-stick"></i>
               </el-divider>
 
-              <el-form-item label="定制订阅:">
+              <el-form-item label="转换订阅:">
                 <el-input class="copy-content" disabled v-model="customSubUrl">
                   <el-button slot="append" v-clipboard:copy="customSubUrl" v-clipboard:success="onCopy" ref="copy-btn"
                     icon="el-icon-document-copy">复制</el-button>
                 </el-input>
               </el-form-item>
-              <!-- <el-form-item label="订阅短链:">
-                <el-input class="copy-content" disabled v-model="curtomShortSubUrl">
-                  <el-button slot="append" v-clipboard:copy="curtomShortSubUrl" v-clipboard:success="onCopy"
-                    ref="copy-btn" icon="el-icon-document-copy">复制</el-button>
-                </el-input>
-              </el-form-item> -->
 
               <el-form-item label-width="0px" style="margin-top: 40px; text-align: center">
                 <el-button style="width: 140px" type="danger" @click="makeUrl"
                   :disabled="form.sourceSubUrl.length === 0">生成订阅链接</el-button>
-                <!-- <el-button style="width: 140px" type="danger" @click="makeShortUrl" :loading="loading"
-                  :disabled="customSubUrl.length === 0">生成短链接</el-button> -->
                 <el-button style="width: 140px" type="primary" @click="surgeInstall" icon="el-icon-connection">一键导入Surge</el-button>
               </el-form-item>
 
@@ -195,20 +174,15 @@
 </template>
 
 <script>
-// const project = process.env.VUE_APP_PROJECT
 const remoteConfigSample = process.env.VUE_APP_SUBCONVERTER_REMOTE_CONFIG
 const subDocAdvanced = process.env.VUE_APP_SUBCONVERTER_DOC_ADVANCED
-const gayhubRelease = process.env.VUE_APP_BACKEND_RELEASE
 const defaultBackend = process.env.VUE_APP_SUBCONVERTER_DEFAULT_BACKEND + '/sub?'
-const shortUrlBackend = process.env.VUE_APP_MYURLS_API
 const configUploadBackend = process.env.VUE_APP_CONFIG_UPLOAD_API
-const tgBotLink = process.env.VUE_APP_BOT_LINK
 
 export default {
   data() {
     return {
-      backendVersion: "",
-      advanced: "2",
+      advanced: "1",
 
       // 是否为 PC 端
       isPC: true,
@@ -232,7 +206,6 @@ export default {
           Trojan: "trojan",
           Surge3: "surge&ver=3",
         },
-        backendOptions: [{ value: "https://sub-converter.q58.org/sub?" }],
         remoteConfig: [
           {
             label: "universal",
@@ -309,7 +282,6 @@ export default {
       form: {
         sourceSubUrl: "",
         clientType: "",
-        customBackend: "",
         remoteConfig: "",
         excludeRemarks: "",
         includeRemarks: "",
@@ -342,14 +314,12 @@ export default {
 
       loading: false,
       customSubUrl: "",
-      curtomShortSubUrl: "",
 
       dialogUploadConfigVisible: false,
       loadConfig: "",
       dialogLoadConfigVisible: false,
       uploadConfig: "",
       uploadPassword: "",
-      myBot: tgBotLink,
       sampleConfig: remoteConfigSample,
       subDocAdvanced: subDocAdvanced,
 
@@ -367,21 +337,10 @@ export default {
   },
   mounted() {
     this.form.clientType = "clash";
-    this.notify();
-    this.getBackendVersion();
   },
   methods: {
     onCopy() {
       this.$message.success("Copied!");
-    },
-    // goToProject() {
-    //   window.open(project);
-    // },
-    gotoGayhub() {
-      window.open(gayhubRelease);
-    },
-    gotoRemoteConfig() {
-      window.open(remoteConfigSample);
     },
     clashInstall() {
       if (this.customSubUrl === "") {
@@ -393,9 +352,7 @@ export default {
       window.open(
         url +
         encodeURIComponent(
-          this.curtomShortSubUrl !== ""
-            ? this.curtomShortSubUrl
-            : this.customSubUrl
+            this.customSubUrl
         )
       );
     },
@@ -420,10 +377,7 @@ export default {
         return false;
       }
 
-      let backend =
-        this.form.customBackend === ""
-          ? defaultBackend
-          : this.form.customBackend;
+      let backend = defaultBackend
 
       let sourceSub = this.form.sourceSubUrl;
       sourceSub = sourceSub.replace(/(\n|\r|\n\r)/g, "|");
@@ -497,53 +451,7 @@ export default {
       }
 
       this.$copyText(this.customSubUrl);
-      this.$message.success("定制订阅已复制到剪贴板");
-    },
-    makeShortUrl() {
-      if (this.customSubUrl === "") {
-        this.$message.warning("请先生成订阅链接，再获取对应短链接");
-        return false;
-      }
-
-      this.loading = true;
-
-      let data = new FormData();
-      data.append("longUrl", btoa(this.customSubUrl));
-
-      this.$axios
-        .post(shortUrlBackend, data, {
-          header: {
-            "Content-Type": "application/form-data; charset=utf-8"
-          }
-        })
-        .then(res => {
-          if (res.data.Code === 1 && res.data.ShortUrl !== "") {
-            this.curtomShortSubUrl = res.data.ShortUrl;
-            this.$copyText(res.data.ShortUrl);
-            this.$message.success("短链接已复制到剪贴板");
-          } else {
-            this.$message.error("短链接获取失败：" + res.data.Message);
-          }
-        })
-        .catch(() => {
-          this.$message.error("短链接获取失败");
-        })
-        .finally(() => {
-          this.loading = false;
-        });
-    },
-    notify() {
-      const h = this.$createElement;
-
-      this.$notify({
-        title: "隐私提示",
-        type: "warning",
-        message: h(
-          "i",
-          { style: "color: teal" },
-          "各种订阅链接（短链接服务除外）生成纯前端实现，无隐私问题。默认提供后端转换服务，隐私担忧者请自行搭建后端服务。"
-        )
-      });
+      this.$message.success("转换订阅已复制到剪贴板");
     },
     confirmUploadConfig() {
       if (this.uploadConfig === "") {
@@ -602,7 +510,7 @@ export default {
         } catch (e) {
           // If an error occurs, display an error message with the error details
           this.$message.error(
-            "解析短链接失败，请检查短链接服务端是否配置跨域：" + e
+            e
           );
         } finally {
           // Set `loading` to false
@@ -630,7 +538,7 @@ export default {
           const url = new URL(await this.analyzeUrl());
 
           // Set the custom backend URL
-          this.form.customBackend = url.origin + url.pathname + "?";
+          // this.form.customBackend = url.origin + url.pathname + "?";
 
           // Parse the URL parameters
           const params = new URLSearchParams(url.search);
@@ -685,40 +593,30 @@ export default {
           this.dialogLoadConfigVisible = false;
 
           // Display success message
-          this.$message.success("长/短链接已成功解析为订阅信息");
+          this.$message.success("链接已成功解析为订阅信息");
         } catch (error) {
           // Display error message if URL is not valid
           this.$message.error("请输入正确的订阅地址!");
         }
       })();
     },
-    backendSearch(queryString, cb) {
-      let backends = this.options.backendOptions;
+    // backendSearch(queryString, cb) {
+    //   let backends = this.options.backendOptions;
 
-      let results = queryString
-        ? backends.filter(this.createFilter(queryString))
-        : backends;
+    //   let results = queryString
+    //     ? backends.filter(this.createFilter(queryString))
+    //     : backends;
 
-      // 调用 callback 返回建议列表的数据
-      cb(results);
-    },
-    createFilter(queryString) {
-      return candidate => {
-        return (
-          candidate.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-        );
-      };
-    },
-    getBackendVersion() {
-      this.$axios
-        .get(
-          defaultBackend.substring(0, defaultBackend.length - 5) + "/version"
-        )
-        .then(res => {
-          this.backendVersion = res.data.replace(/backend\n$/gm, "");
-          this.backendVersion = this.backendVersion.replace("subconverter", "");
-        });
-    },
+    //   // 调用 callback 返回建议列表的数据
+    //   cb(results);
+    // },
+    // createFilter(queryString) {
+    //   return candidate => {
+    //     return (
+    //       candidate.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
+    //     );
+    //   };
+    // },
     saveSubUrl() {
       if (this.form.sourceSubUrl !== '') {
         this.setLocalStorageItem('sourceSubUrl', this.form.sourceSubUrl)
