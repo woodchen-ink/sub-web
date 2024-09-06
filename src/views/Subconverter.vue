@@ -232,7 +232,7 @@ export default {
           Trojan: "trojan",
           Surge3: "surge&ver=3",
         },
-        backendOptions: [{ value: "https://sub-web.q58.org/sub?" }],
+        backendOptions: [{ value: "https://subconverter.q58.org/sub?" }],
         remoteConfig: [
           {
             label: "universal",
