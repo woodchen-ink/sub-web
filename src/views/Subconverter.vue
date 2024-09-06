@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="width:90%;max-width: 1400px;">
     <el-row style="margin-top: 10px">
       <el-col>
         <el-card>
