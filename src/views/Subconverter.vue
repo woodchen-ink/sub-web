@@ -1,5 +1,5 @@
 <template>
-  <div style="width:90%;max-width: 1400px; margin: 20px auto;">
+  <div style="width:90%;max-width: 1200px; margin: 20px auto;">
     <el-row style="margin-top: 10px">
       <el-col>
         <el-card>
@@ -537,9 +537,6 @@ export default {
           // Analyze the URL and extract its components
           const url = new URL(await this.analyzeUrl());
 
-          // Set the custom backend URL
-          // this.form.customBackend = url.origin + url.pathname + "?";
-
           // Parse the URL parameters
           const params = new URLSearchParams(url.search);
 
@@ -600,23 +597,6 @@ export default {
         }
       })();
     },
-    // backendSearch(queryString, cb) {
-    //   let backends = this.options.backendOptions;
-
-    //   let results = queryString
-    //     ? backends.filter(this.createFilter(queryString))
-    //     : backends;
-
-    //   // 调用 callback 返回建议列表的数据
-    //   cb(results);
-    // },
-    // createFilter(queryString) {
-    //   return candidate => {
-    //     return (
-    //       candidate.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0
-    //     );
-    //   };
-    // },
     saveSubUrl() {
       if (this.form.sourceSubUrl !== '') {
         this.setLocalStorageItem('sourceSubUrl', this.form.sourceSubUrl)
