@@ -4,7 +4,7 @@
       <el-col>
         <el-card>
           <div slot="header">
-            订阅转换器-V2ray,Clash,SSR,SS等订阅链接在线转换
+            Q58订阅转换器-V2ray,Clash,SSR,SS等订阅链接在线转换
           </div>
           <el-container>
             <el-form :model="form" label-width="140px" label-position="left" style="width: 100%">
@@ -327,7 +327,7 @@ export default {
     };
   },
   created() {
-    document.title = "订阅转换器-V2ray,Clash,SSR,SS等订阅链接在线转换";
+    document.title = "Q58订阅转换器-V2ray,Clash,SSR,SS等订阅链接在线转换";
     this.isPC = this.$getOS().isPc;
 
     // 获取 url cache

@@ -1,18 +1,6 @@
 {
-    "short_name": "sub-web",
-    "name": "sub-web",
-    "icon": [
-        {
-            "src": "./img/icons/icon-192x192.png",
-            "sizes": "192x192",
-            "type": "image/png"
-        },
-        {
-            "src": "./img/icons/android-chrome-512x512.png",
-            "sizes": "512x512",
-            "type": "image/png"
-        }
-    ],
+    "short_name": "Q58订阅转换器",
+    "name": "Q58订阅转换器",
     "start_url": "index.html",
     "display": "standalone",
     "background_color": "#002140",
