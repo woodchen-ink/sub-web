@@ -195,7 +195,7 @@
 </template>
 
 <script>
-const project = process.env.VUE_APP_PROJECT
+// const project = process.env.VUE_APP_PROJECT
 const remoteConfigSample = process.env.VUE_APP_SUBCONVERTER_REMOTE_CONFIG
 const subDocAdvanced = process.env.VUE_APP_SUBCONVERTER_DOC_ADVANCED
 const gayhubRelease = process.env.VUE_APP_BACKEND_RELEASE
